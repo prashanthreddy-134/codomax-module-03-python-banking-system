@@ -1,0 +1,42 @@
+classDiagram
+    class Account {
+        <<abstract>>
+        +str account_number
+        +str holder_name
+        -Decimal _balance
+        -list _transactions
+        +balance Decimal
+        +deposit(amount)
+        +withdraw(amount)*
+        +to_dict()
+    }
+
+    class SavingsAccount {
+        +Decimal interest_rate
+        +withdraw(amount)
+        +apply_interest()
+    }
+
+    class CurrentAccount {
+        +Decimal overdraft_limit
+        +withdraw(amount)
+    }
+
+    class Bank {
+        -dict accounts
+        -int _next_account_number
+        +create_account(type, name, opening_balance)
+        +get_account(account_number)
+        +transfer(from_number, to_number, amount)
+        +list_accounts()
+    }
+
+    class JSONStorage {
+        +load()
+        +save(data)
+    }
+
+    Account <|-- SavingsAccount
+    Account <|-- CurrentAccount
+    Bank "1" o-- "*" Account : manages
+    Bank --> JSONStorage : persists through
